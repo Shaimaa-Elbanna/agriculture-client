@@ -1,0 +1,53 @@
+
+  @import "../../styles/responsive.scss";
+
+.secondFram {
+  h2 {
+    margin: 3%  0% 0% 3%;
+    padding-top: 1%;
+    
+
+    @include xxl{
+      font-size: 24px;
+    }
+  }
+
+  background-color: rgba(24, 197, 62, 0.466);
+      border-radius: 2%;
+    
+      margin:5% 40% 5% 0%;
+
+  .list {
+    .listItem {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2%;
+      .user {
+        display: flex;
+        gap: 20px;
+
+      
+
+     
+      }
+
+      .amount {
+        position: relative;
+        transform: translate(50%);
+      }
+    }
+  }
+}
+
+
+.headColor{
+  color: #2fd619;
+  font-size: large;
+
+}
+.normalColor{
+  color: #000;
+  font-size: medium;
+
+}

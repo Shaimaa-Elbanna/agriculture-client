@@ -1,0 +1,19 @@
+.row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .col-md-8 {
+    flex: 0 0 calc(66.666% - 10px); /* 8 out of 12 columns */
+    /* Adjust margin, padding, etc., for col-md-8 */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-left: 3%;
+    padding-top: 3%;
+  }
+  
+  .col-md-4 {
+    flex: 0 0 calc(33.333% - 10px); /* 4 out of 12 columns */
+    /* Adjust margin, padding, etc., for col-md-4 */
+  }
