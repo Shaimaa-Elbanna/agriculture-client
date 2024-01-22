@@ -56,8 +56,8 @@ export default function LineChart() {
 
 
       const date = new Date(parameters.time)
-      const month = date.getUTCMonth() + 1; // Months are 0-based, so add 1
-      const day = date.getUTCDate();
+      // const month = date.getUTCMonth() + 1; // Months are 0-based, so add 1
+      // const day = date.getUTCDate();
       date.setHours(date.getHours() + 2);
 
       const adjustedTime = date.toISOString().slice(11, 19);

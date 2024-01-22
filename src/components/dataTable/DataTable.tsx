@@ -31,6 +31,7 @@ const DataTable = (props: Props) => {
   // // });
 
   const handleDelete = (id: number) => {
+    console.log("🚀 ~ handleDelete ~ id:", id)
     //delete the item
     // mutation.mutate(id)
     

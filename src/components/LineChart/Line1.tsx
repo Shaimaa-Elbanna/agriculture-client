@@ -1,5 +1,4 @@
 // Line1.js (inside '../../components/lines/line1/Line1' directory)
-import  { useEffect } from 'react';
 import {
   CartesianGrid,
   Legend,
