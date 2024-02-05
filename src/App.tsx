@@ -10,7 +10,6 @@ import Footer from "./components/footer/Footer";
 import Menu from "./components/menu/Menu";
 import Navbar from "./components/navbar/Navbar";
 import Dashboard from "./pages/dashboard/dashboard";
-import Home from "./pages/home/Home";
 import LineChart from "./pages/lineChart/LineChart";
 import Login from "./pages/login/Login";
 import Product from "./pages/product/Product";
@@ -48,12 +47,16 @@ function App() {
       children: [
         {
           path: "/",
-          element: <Home />,
-        },
-        {
-          path: "/dashboard",
           element: <Dashboard />,
         },
+        {
+          path: "/home",
+          element: <Dashboard />,
+        },
+        // {
+        //   path: "/dashboard",
+        //   element: <Dashboard />,
+        // },
         {
           path: "/users",
           element: <Users />,

@@ -49,7 +49,7 @@ export default function LineChart() {
   })
 
   useEffect(() => {
-    const socket = io('https://agriculture-app.onrender.com/')
+    const socket = io('https://agriculture-app.onrender.com/' || "http://localhost:3000/")
     socket.on("mqttMessage", (data: SocketData) => {
       const { deviceName, parameters } = data;
       console.log(data);

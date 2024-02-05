@@ -46,7 +46,8 @@ export default function Line1({ data ,value}: { data: ChartData[] ,value:string}
         <Tooltip />
         <Legend />
         <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
-        <Line dataKey={value}></Line>
+        <Line dataKey={value}
+        ></Line>
         {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
       </LineChart>
     </ResponsiveContainer>

@@ -9,14 +9,14 @@ export const menu = [
         url: "/",
         icon: "home.svg",
       },
+      // {
+      //   id: 2,
+      //   title: "DashBoard",
+      //   url: "/dashboard",
+      //   icon: "chart.svg",
+      // },
       {
         id: 2,
-        title: "DashBoard",
-        url: "/dashboard",
-        icon: "chart.svg",
-      },
-      {
-        id: 3,
         title: "Profile",
         url: "/users/1",
         icon: "user.svg",
