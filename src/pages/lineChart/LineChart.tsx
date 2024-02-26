@@ -64,7 +64,7 @@ export default function LineChart() {
 
       Object.entries(parameters).forEach(([parameter, value]) => {
         const newData: ChartData = {
-          name: adjustedTime,
+          time: adjustedTime,
           value: parseInt(value)
         }
         if (deviceName == "1" || deviceName == "2" || deviceName == "3") {

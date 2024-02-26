@@ -4,7 +4,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { createBrowserRouter, Outlet,RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 
 import Footer from "./components/footer/Footer";
 import Menu from "./components/menu/Menu";
@@ -53,10 +53,7 @@ function App() {
           path: "/home",
           element: <Dashboard />,
         },
-        // {
-        //   path: "/dashboard",
-        //   element: <Dashboard />,
-        // },
+
         {
           path: "/users",
           element: <Users />,
@@ -64,12 +61,12 @@ function App() {
         {
           path: "/products",
           element: <Products />,
-        },{
+        }, {
           path: "/linechart",
           element: <LineChart />,
         },
         {
-          path: "/users/:id",
+          path: "/field/:id",
           element: <User />,
         },
         {

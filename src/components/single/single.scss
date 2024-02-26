@@ -1,9 +1,9 @@
-@import "../../styles/responsive.scss";
+@import '../../styles/responsive.scss';
 
 .single {
   display: flex;
 
-  @include xl{
+  @include xl {
     flex-direction: column;
     gap: 50px;
   }
@@ -42,6 +42,66 @@
         }
       }
     }
+    .date-picker {
+      input[type='date'] {
+        padding: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        outline: none;
+        width: 10rem;
+        margin: 0.5rem 0rem 0.5rem 0rem;
+
+        &:focus {
+          border: 2px solid green;
+        }
+      }
+    }
+
+    .timebutton {
+      background-color: rgb(249, 249, 249);
+      border: 1px solid green;
+      color: black;
+      padding: 10px 15px;
+      cursor: pointer;
+      margin-left: 10px;
+      border-radius: 5px;
+    }
+
+    .datebutton {
+      background-color: rgb(249, 249, 249);
+      border: 1px solid green;
+      color: black;
+      padding: 10px 15px;
+      cursor: pointer;
+      margin-left: 10px;
+      border-radius: 5px;
+    }
+
+    .time-picker {
+      input[type='time'] {
+        padding: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        outline: none;
+        width: 10rem;
+
+        &:focus {
+          border: 2px solid green;
+        }
+      }
+    }
+    .loading-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 50vh; /* Adjust this value as needed */
+    }
+    .bold-large {
+      // font-weight: bold;
+      font-size: x-large;
+    }
 
     hr {
       width: 90%;
@@ -49,7 +109,7 @@
       border: 0.5px solid gray;
       margin: 20px 0px;
 
-      @include md{
+      @include md {
         display: none;
       }
     }
@@ -59,7 +119,7 @@
       width: 80%;
       height: 400px;
 
-      @include md{
+      @include md {
         display: none;
       }
     }
@@ -80,7 +140,7 @@
         background-color: #f45b69;
 
         &::after {
-          content: "";
+          content: '';
           position: absolute;
           left: 50%;
           bottom: 0;
@@ -96,15 +156,15 @@
           padding: 15px;
           background-color: #f45b6810;
 
-          @include md{
+          @include md {
             min-width: 250px;
           }
 
-          p{
+          p {
             margin-bottom: 5px;
           }
 
-          time{
+          time {
             font-size: 12px;
           }
         }

@@ -1,15 +1,11 @@
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useGetDeviceOneDataQuery } from "../../state/api";
 import "./single.scss";
 
-import {
-  Legend,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+
+import { useEffect, useState } from "react";
+import CompareLineChart from "./CompareLineChart";
+import { getDataFromLocalStorage, saveDataToLocalStorage } from "../../util/getAndSaveDataLocalStrorage";
 
 type Props = {
   id: number;
@@ -23,193 +19,239 @@ type Props = {
   activities?: { time: string; text: string }[];
 };
 
+
+
+
+
 const Single = (props: Props) => {
-  const { data, isLoading } = useGetDeviceOneDataQuery("1")
-  console.log("🚀 ~ Single ~ isLoading:", isLoading)
-  console.log("🚀 ~ Single ~ data:", data)
+
+  const [selectedDevice, setSelectedDevice] = useState(getDataFromLocalStorage("reportCurrentDevice", "1"))
+
+  // start time and date vars 
+  const [selectedTime, setSelectedTime] = useState("")
+  console.log("🚀 ~ Single ~ selectedTime:", selectedTime)
+  const [selectedDate, setSelectedDate] = useState("");
+  console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
+  const [startTimePickerActive, setStartTimePickerActive] = useState(true)
+  const [startDatePickerActive, setStartDatePickerActive] = useState(true)
+
+  // end time and date vars 
+  const [selectedEndTime, setSelectedEndTime] = useState("")
+  const [selectedEndDate, setSelectedEndDate] = useState("");
+  const [endTimePickerActive, setEndTimePickerActive] = useState(true)
+  const [endDatePickerActive, setEndDatePickerActive] = useState(true)
 
 
-  const deviceData = data?.[0].topics[0].data.slice(-50)
-  console.log("🚀 ~  ~ deviceData:", deviceData)
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const year = yesterday.getFullYear();
+  const month = String(yesterday.getMonth() + 1).padStart(2, '0');
+  const day = String(yesterday.getDate()).padStart(2, '0');
+
+
+  const defaultSatrtAndEndDate = `${year}-${month}-${day}`;
+
+  const { data, isFetching } = useGetDeviceOneDataQuery(selectedDevice)
+  useEffect(() => {
+    saveDataToLocalStorage("selectedDeviceID", data?.[0]?._id || "")
+    saveDataToLocalStorage("reportCurrentDevice", selectedDevice)
+
+  }, [selectedDevice, data])
 
 
 
-  const formattedData = deviceData?.map(item => {
-    const date = new Date(item.time)
-    const year = date.getUTCFullYear()
-    const month = date.getUTCMonth() + 1; // Months are 0-based, so add 1
-    const day = date.getUTCDate();
-    const adjustedTime = date.toISOString().slice(11, 19);
-    return { ...item, time: adjustedTime, year, month, day }
 
-  })
-  console.log("🚀 ~ formattedData ~ formattedData:", formattedData)
+  function handleDviceNameChange(event: SelectChangeEvent<string>) {
+    setSelectedDevice(event.target.value)
 
-  const currentTime = new Date();
-  const oneHourAgo = new Date(currentTime.getTime() - (60 * 60 * 1000)); // Subtract 1 hour in milliseconds
-  
-  const dataLastHour = formattedData?.filter(item => {
-      const itemTime = new Date(item.time);
-      return itemTime >= oneHourAgo && itemTime <= currentTime;
-  });
-  console.log("🚀 ~ dataLastHour ~ :", dataLastHour);
+  }
 
-  // Get the start time of the current hour
-const currentHourStart = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), currentTime.getHours(), 0, 0);
 
-// Get the end time of the current hour
-const currentHourEnd = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate(), currentTime.getHours() + 1, 0, 0);
+  useEffect(() => {
 
-// Filter data points within the current hour
-const dataCurrentHour = deviceData?.filter(item => {
-    const itemTime = new Date(item.time);
-    return itemTime >= currentHourStart && itemTime < currentHourEnd;
-});
+  }, [selectedDevice, isFetching])
 
-console.log("🚀 ~ dataCurrentHour ~ dataCurrentHour:", dataCurrentHour);
 
-  
-  
-  // const fullTime = deviceData?.map(({ time }) => {
-  //   const date = new Date(time)
-  //   date.setHours(date.getHours() + 2);
-  //   const year = date.getUTCFullYear()
-  //   const month = date.getUTCMonth() + 1; // Months are 0-based, so add 1
-  //   const day = date.getUTCDate();
 
-  //   const adjustedTime = date.toISOString().slice(11, 19);
 
-  //   return { adjustedTime, month, day, year }
-  // })
-  // console.log("🚀 ~ fullTime ~ fullTime:", fullTime)
+
+
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedDate(e.target.value);
+    console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
+
+  };
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedTime(e.target.value);
+    console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
+
+  };
+  function toggleStartDatePicker() {
+    setStartDatePickerActive(!startDatePickerActive)
+  }
+  function toggleStartTimePicker() {
+    setStartTimePickerActive(!startTimePickerActive)
+  }
+  function toggleEndDatePicker() {
+    setEndDatePickerActive(!endDatePickerActive)
+  }
+  function toggleEndTimePicker() {
+    setEndTimePickerActive(!endTimePickerActive)
+  }
+  function handleEndDateChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setSelectedEndDate(e.target.value)
+  }
+  function handleEndTimeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setSelectedEndTime(e.target.value)
+  }
+
 
 
   return (
-    <div className="single" key={data?.[0]._id}>
+    <div className="single" key={data?.[0]?._id}>
       <div className="view">
-        <div className="info">
-          <div className="topInfo">
-            {props.img && <img src={props.img} alt="" />}
-            <h1>{props.title}</h1>
-            <button>Update</button>
+
+
+        {/* drop down list  */}
+        <FormControl sx={{ m: 1, minWidth: 120 }} >
+          <InputLabel id="demo-simple-select-label">Devices</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select-disabled"
+            value={selectedDevice}
+            label="selectedDevice"
+            onChange={handleDviceNameChange}
+          >
+            <MenuItem value={0}>
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value={1}>Device One</MenuItem>
+            <MenuItem value={2}>Device Two</MenuItem>
+            <MenuItem value={3}>Device Three</MenuItem>
+          </Select>
+          <FormHelperText>selectedDevice</FormHelperText>
+
+        </FormControl>
+        {/* drop down list  */}
+
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          {/* select start Date and Time  */}
+          <div style={{ marginRight: "20px" }}>
+            <div className={`date-picker  ${startDatePickerActive ? "active" : "inactive"}`}>
+              <input
+                type="date"
+                value={selectedDate}
+                onInput={handleDateChange}
+                disabled={startDatePickerActive}
+              />
+              <button onClick={toggleStartDatePicker} className="datebutton "
+                style={{ backgroundColor: startDatePickerActive ? "green" : "white", color: startDatePickerActive ? "white" : "black" }}>Select Start Date</button>
+
+            </div>
+
+            <div className={`time-picker ${startTimePickerActive ? "active" : "inactive"}`}>
+              <input
+                type="time"
+                value={selectedTime}
+                onChange={handleTimeChange}
+                disabled={startTimePickerActive}
+              />
+              <button onClick={toggleStartTimePicker} className="timebutton "
+                style={{ backgroundColor: startTimePickerActive ? "green" : "white", color: startTimePickerActive ? "white" : "black" }}
+              >Select Start Time</button>
+
+            </div>
+
           </div>
-          <div className="details">
-            {Object.entries(props.info).map((item) => (
-              <div className="item" key={item[0]}>
-                <span className="itemTitle">{item[0]}</span>
-                <span className="itemValue">{item[1]}</span>
-              </div>
-            ))}
+
+          {/* select end Date and Time  */}
+
+          <div>
+            <div className={`date-picker  ${endDatePickerActive ? "active" : "inactive"}`}>
+              <input
+                type="date"
+                value={selectedEndDate}
+                onInput={handleEndDateChange}
+                disabled={startDatePickerActive && endDatePickerActive}
+              />
+              <button onClick={toggleEndDatePicker} className="datebutton "
+                style={{ backgroundColor: endDatePickerActive ? "green" : "white", color: endDatePickerActive ? "white" : "black" }}>Select End Date</button>
+
+            </div>
+
+            <div className={`time-picker ${endTimePickerActive ? "active" : "inactive"}`}>
+              <input
+                type="time"
+                value={selectedEndTime}
+                onChange={handleEndTimeChange}
+                disabled={startTimePickerActive && endTimePickerActive}
+              />
+              <button onClick={toggleEndTimePicker} className="timebutton "
+                style={{ backgroundColor: endTimePickerActive ? "green" : "white", color: endTimePickerActive ? "white" : "black" }}
+              >Select End Time</button>
+
+            </div>
+
           </div>
         </div>
         <hr />
 
-        {formattedData && (
-
-
-
-          <div className="chart">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                width={500}
-                height={300}
-                data={formattedData}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <XAxis dataKey="time" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey={"S"}
-                  stroke="#82ca9d"
-                />
-                <Line
-                  type="monotone"
-                  dataKey={"PH"}
-                  stroke="#8884d8"
-                />
-                <Line
-                  type="monotone"
-                  dataKey={"T"}
-                  stroke="#010111"
-                />
-
-
-
-
-
-
-              </LineChart>
-            </ResponsiveContainer>
+        {/* device info section  */}
+        <div className="info">
+          <div className="topInfo">
+            {props.img && <img src={props.img} alt="" />}
+            <h1>{data && data[0]?.deviceName ? "Device" + data[0].deviceName : "No Data"}</h1>
           </div>
+          <div className="details">
+            <div className="item" >
+              <span className="itemTitle"> Start Date:</span>
+              <span className="itemValue">{selectedDate ? selectedDate : defaultSatrtAndEndDate}</span>
+            </div>
+            <div className="item" >
+              <span className="itemTitle"> Start Time:</span>
+              <span className="itemValue">{selectedTime ? selectedTime : "08:00 AM"}</span>
+            </div>
+            <div className="item" >
+              <span className="itemTitle"> End Time:</span>
+              <span className="itemValue">{selectedEndTime ? selectedEndTime : "22:00 AM"}</span>
+            </div>
+            <div className="item" >
+              <span className="itemTitle"> End Date:</span>
+              <span className="itemValue">{selectedDate ? selectedDate : defaultSatrtAndEndDate}</span>
+            </div>
 
-        )}
-
-
-        {/* {props.chart && (
-
-
-          <div className="chart">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                width={500}
-                height={300}
-                data={props.chart.data}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                {props.chart.dataKeys.map((dataKey) => (
-                  <Line
-                    type="monotone"
-                    dataKey={dataKey.name}
-                    stroke={dataKey.color}
-                  />
-
-
-                ))}
-
-
-
-              </LineChart>
-            </ResponsiveContainer>
           </div>
-        )} */}
+        </div>
+        {/* device info section  */}
 
-        {/* {deviceData} */}
+
+        {/* linchart section  */}
+
+        <CompareLineChart currentDeviceId={data?.[0]?._id || ""} startTime={startTimePickerActive ? "08:00" : selectedTime} startDate={startDatePickerActive ? defaultSatrtAndEndDate : selectedDate} endTime={endTimePickerActive ? "22:00" : selectedEndTime} endDate={endDatePickerActive ? "" : selectedEndDate} />
+
+        {/* linchart section  */}
+
+
+
       </div>
-      {/* <div className="activities">
-        <h2>Latest Activities</h2>
-        {props.activities && (
-          <ul>
-            {props.activities.map((activity) => (
-              <li key={activity.text}>
-                <div>
-                  <p>{activity.text}</p>
-                  <time>{activity.time}</time>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div> */}
-    </div>
+
+    </div >
   );
 };
 
 
 export default Single;
+
+
+
+
+
+
+
+
+
+
+
+// what is required now is to adjust the toggle buttons 

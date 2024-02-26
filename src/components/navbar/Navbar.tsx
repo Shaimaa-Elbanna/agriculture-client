@@ -5,8 +5,8 @@ const Navbar = () => {
     <div className="navbar">
       <div className="logo newlogo" >
         {/* <img src="/public/newlogo.png" alt=""  className="newlogo"/> */}
-<h1 className="hedColor" >        Farmy
-</h1>
+        <h1 className="hedColor" >        Farmy
+        </h1>
       </div>
       <div className="icons">
         <img src="/search.svg" alt="" className="icon" />
@@ -14,16 +14,16 @@ const Navbar = () => {
         <img src="/expand.svg" alt="" className="icon" />
         <div className="notification">
           <img src="/notifications.svg" alt="" />
-          <span>1</span>
+          {/* <span>1</span> */}
         </div>
-        <div className="user">
+        {/* <div className="user">
           <img
             src="https://images.pexels.com/photos/11038549/pexels-photo-11038549.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
             alt=""
           />
           <span>Jane</span>
-        </div>
-        <img src="/settings.svg" alt="" className="icon" />
+        </div> */}
+        {/* <img src="/settings.svg" alt="" className="icon" /> */}
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ export interface dataPayload {
 }
 
 export interface ChartData {
-  name: string;
+  time: string;
   value: number;
 }
 
