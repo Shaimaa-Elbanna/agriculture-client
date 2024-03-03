@@ -17,6 +17,10 @@ import Products from "./pages/products/Products";
 import User from "./pages/user/User";
 import Users from "./pages/users/Users";
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ParentTwo from "./pages/field2/ParentTwo";
+import ParentThree from "./pages/field3/ParentThree";
 
 const queryClient = new QueryClient();
 
@@ -73,15 +77,25 @@ function App() {
           path: "/products/:id",
           element: <Product />,
         },
-      ],
+        {
+          path: "/fieldtwo",
+          element: <ParentTwo />,
+        },
+        {
+          path: "/fieldthree",
+          element: <ParentThree />,
+        }
+        
+  ],
     },
-    {
-      path: "/login",
-      element: <Login />,
+{
+  path: "/login",
+    element: <Login />,
     },
   ]);
 
-  return <RouterProvider router={router} />;
+return (<><RouterProvider router={router} />
+  <ToastContainer /></>);
 }
 
 export default App;

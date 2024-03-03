@@ -5,7 +5,7 @@ import './LineCard.scss';
 
 import Line1 from './Line1';
 import { AdjustData } from './types';
-import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, Key } from 'react';
+// import { ReactElement, JSXElementConstructor, ReactNode, ReactPortal, Key } from 'react';
 import AlertData from './AlertData';
 
 

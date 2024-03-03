@@ -36,13 +36,13 @@ export const menu = [
       {
         id: 2,
         title: 'Field 2',
-        url: '/field/2',
+        url: '/fieldtwo',
         icon: 'product.svg',
       },
       {
         id: 3,
         title: 'Field 3',
-        url: '/field/3',
+        url: '/fieldthree',
         icon: 'product.svg',
       },
     ],

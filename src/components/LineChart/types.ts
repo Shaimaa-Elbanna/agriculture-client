@@ -3,11 +3,11 @@ export interface SocketData {
   deviceName: string;
   message: string;
   fieldName: string;
-  parameters: dataPayload;
+  parameters: DataPayload;
 }
 
 
-export interface dataPayload {
+export interface DataPayload {
   T?: number;
   S?: number;
   H?: number;

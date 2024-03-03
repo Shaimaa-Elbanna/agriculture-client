@@ -1,70 +1,67 @@
+import React, { useEffect, useState } from 'react'
+import { getDataFromLocalStorage, saveDataToLocalStorage } from '../../util/getAndSaveDataLocalStrorage'
+import { useGetDeviceOneDataQuery } from '../../state/api'
+import { Device } from '../../state/types/device'
+import CompareLineChart from '../single/CompareLineChart'
+
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import { useGetDeviceOneDataQuery } from "../../state/api";
-import "./single.scss";
 
 
-import { useEffect, useState } from "react";
-import CompareLineChart from "./CompareLineChart";
-import { getDataFromLocalStorage, saveDataToLocalStorage } from "../../util/getAndSaveDataLocalStrorage";
-import { Device } from "../../state/types/device";
+interface FieldComponentProps {
+  fieldName: string,
+  localStorageKeys: LocalStorageKeys
+}
 
-type Props = {
-  img?: string;
+interface LocalStorageKeys {
+  deviceName: string,
+  deviceId: string
+}
+export default function FieldComponent({fieldName,localStorageKeys}:FieldComponentProps) {
+  const [selectedDevice, setSelectedDevice] = useState(getDataFromLocalStorage(localStorageKeys.deviceName, "1"))
 
-};
+   // start time and date vars 
+   const [selectedTime, setSelectedTime] = useState("")
+   console.log("🚀 ~ Single ~ selectedTime:", selectedTime)
+   const [selectedDate, setSelectedDate] = useState("");
+   console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
+   const [startTimePickerActive, setStartTimePickerActive] = useState(true)
+   const [startDatePickerActive, setStartDatePickerActive] = useState(true)
+ 
+   // end time and date vars 
+   const [selectedEndTime, setSelectedEndTime] = useState("")
+   const [selectedEndDate, setSelectedEndDate] = useState("");
+   const [endTimePickerActive, setEndTimePickerActive] = useState(true)
+   const [endDatePickerActive, setEndDatePickerActive] = useState(true)
+ 
+ 
+   const yesterday = new Date();
+   yesterday.setDate(yesterday.getDate() - 1);
+ 
+   const year = yesterday.getFullYear();
+   const month = String(yesterday.getMonth() + 1).padStart(2, '0');
+   const day = String(yesterday.getDate()).padStart(2, '0');
+ 
+ 
+   const defaultSatrtAndEndDate = `${year}-${month}-${day}`;
+   const { data, isFetching } = useGetDeviceOneDataQuery(selectedDevice)
+   const [fieldData, setFieldData] = useState<Device|undefined>()
 
 
-
-
-
-const Single = (props: Props) => {
-
-  const [selectedDevice, setSelectedDevice] = useState(getDataFromLocalStorage("reportCurrentDevice", "1"))
-
-  // start time and date vars 
-  const [selectedTime, setSelectedTime] = useState("")
-  console.log("🚀 ~ Single ~ selectedTime:", selectedTime)
-  const [selectedDate, setSelectedDate] = useState("");
-  console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
-  const [startTimePickerActive, setStartTimePickerActive] = useState(true)
-  const [startDatePickerActive, setStartDatePickerActive] = useState(true)
-
-  // end time and date vars 
-  const [selectedEndTime, setSelectedEndTime] = useState("")
-  const [selectedEndDate, setSelectedEndDate] = useState("");
-  const [endTimePickerActive, setEndTimePickerActive] = useState(true)
-  const [endDatePickerActive, setEndDatePickerActive] = useState(true)
-
-
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-
-  const year = yesterday.getFullYear();
-  const month = String(yesterday.getMonth() + 1).padStart(2, '0');
-  const day = String(yesterday.getDate()).padStart(2, '0');
-
-
-  const defaultSatrtAndEndDate = `${year}-${month}-${day}`;
-
-  const { data, isFetching } = useGetDeviceOneDataQuery(selectedDevice)
-  console.log("🚀 ~ Single ~ data:", data)
-  const [fieldOne, setFieldOne] = useState<Device|undefined>()
-
-  useEffect(() => {
+   useEffect(() => {
     if (data) {
-      const fieldOne = data?.find((field:Device) =>
-        field.fieldId?.fieldName == "F2"
+      const foundField = data?.find((field:Device) =>
+        field.fieldId?.fieldName == fieldName
       )||undefined
-      setFieldOne(fieldOne)
+      setFieldData(foundField)
     }
-    saveDataToLocalStorage("selectedDeviceID", fieldOne?._id || "")
-    saveDataToLocalStorage("reportCurrentDevice", selectedDevice)
+    saveDataToLocalStorage(localStorageKeys.deviceId, fieldData?._id || "")
+    saveDataToLocalStorage(localStorageKeys.deviceName, selectedDevice)
 
   }, [selectedDevice, data])
 
 
 
-
+  
   function handleDviceNameChange(event: SelectChangeEvent<string>) {
     setSelectedDevice(event.target.value)
 
@@ -204,8 +201,8 @@ const Single = (props: Props) => {
         {/* device info section  */}
         <div className="info">
           <div className="topInfo">
-            {props.img && <img src={props.img} alt="" />}
-            <h1>{data && data[0]?.deviceName ? "Device" + data[0].deviceName : "No Data"}</h1>
+            {/* {props.img && <img src={props.img} alt="" />} */}
+            <h1>{data && fieldData?.deviceName ? "Device" + fieldData?.deviceName : "No Data"}</h1>
           </div>
           <div className="details">
             <div className="item" >
@@ -232,7 +229,7 @@ const Single = (props: Props) => {
 
         {/* linchart section  */}
 
-        <CompareLineChart currentDeviceId={data?.[0]?._id || ""} startTime={startTimePickerActive ? "08:00" : selectedTime} startDate={startDatePickerActive ? defaultSatrtAndEndDate : selectedDate} endTime={endTimePickerActive ? "22:00" : selectedEndTime} endDate={endDatePickerActive ? "" : selectedEndDate} />
+        <CompareLineChart currentDeviceId={fieldData?fieldData._id : ""} startTime={startTimePickerActive ? "08:00" : selectedTime} startDate={startDatePickerActive ? defaultSatrtAndEndDate : selectedDate} endTime={endTimePickerActive ? "22:00" : selectedEndTime} endDate={endDatePickerActive ? "" : selectedEndDate} />
 
         {/* linchart section  */}
 
@@ -242,19 +239,4 @@ const Single = (props: Props) => {
 
     </div >
   );
-};
-
-
-export default Single;
-
-
-
-
-
-
-
-
-
-
-
-// what is required now is to adjust the toggle buttons 
+}

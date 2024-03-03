@@ -1,11 +1,10 @@
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useGetDeviceOneDataQuery } from "../../state/api";
-import "./single.scss";
-
+import '../products/products.scss'
 
 import { useEffect, useState } from "react";
-import CompareLineChart from "./CompareLineChart";
 import { getDataFromLocalStorage, saveDataToLocalStorage } from "../../util/getAndSaveDataLocalStrorage";
+import CompareLineChart from "../../components/single/CompareLineChart";
 import { Device } from "../../state/types/device";
 
 type Props = {
@@ -17,9 +16,9 @@ type Props = {
 
 
 
-const Single = (props: Props) => {
+const FieldTwo = (props: Props) => {
 
-  const [selectedDevice, setSelectedDevice] = useState(getDataFromLocalStorage("reportCurrentDevice", "1"))
+  const [selectedDevice, setSelectedDevice] = useState(getDataFromLocalStorage("reportCurrentDeviceF2", "1"))
 
   // start time and date vars 
   const [selectedTime, setSelectedTime] = useState("")
@@ -48,17 +47,18 @@ const Single = (props: Props) => {
 
   const { data, isFetching } = useGetDeviceOneDataQuery(selectedDevice)
   console.log("🚀 ~ Single ~ data:", data)
-  const [fieldOne, setFieldOne] = useState<Device|undefined>()
-
+  const [fieldtwo, setFieldTwo] = useState<Device|undefined>()
   useEffect(() => {
     if (data) {
-      const fieldOne = data?.find((field:Device) =>
+      const fieldtwo = data?.find((field:Device) =>
         field.fieldId?.fieldName == "F2"
       )||undefined
-      setFieldOne(fieldOne)
+      setFieldTwo(fieldtwo)
     }
-    saveDataToLocalStorage("selectedDeviceID", fieldOne?._id || "")
-    saveDataToLocalStorage("reportCurrentDevice", selectedDevice)
+
+    console.log("🚀 ~ fieldtwo ~ fieldtwo:", fieldtwo)
+    saveDataToLocalStorage("selectedDeviceIDF2", fieldtwo?._id || "")
+    saveDataToLocalStorage("reportCurrentDeviceF2", selectedDevice)
 
   }, [selectedDevice, data])
 
@@ -205,7 +205,7 @@ const Single = (props: Props) => {
         <div className="info">
           <div className="topInfo">
             {props.img && <img src={props.img} alt="" />}
-            <h1>{data && data[0]?.deviceName ? "Device" + data[0].deviceName : "No Data"}</h1>
+            <h1>{data && fieldtwo?.deviceName ? "Device" + fieldtwo?.deviceName : "No Data"}</h1>
           </div>
           <div className="details">
             <div className="item" >
@@ -232,7 +232,7 @@ const Single = (props: Props) => {
 
         {/* linchart section  */}
 
-        <CompareLineChart currentDeviceId={data?.[0]?._id || ""} startTime={startTimePickerActive ? "08:00" : selectedTime} startDate={startDatePickerActive ? defaultSatrtAndEndDate : selectedDate} endTime={endTimePickerActive ? "22:00" : selectedEndTime} endDate={endDatePickerActive ? "" : selectedEndDate} />
+        <CompareLineChart currentDeviceId={fieldtwo?fieldtwo._id : ""} startTime={startTimePickerActive ? "08:00" : selectedTime} startDate={startDatePickerActive ? defaultSatrtAndEndDate : selectedDate} endTime={endTimePickerActive ? "22:00" : selectedEndTime} endDate={endDatePickerActive ? "" : selectedEndDate} />
 
         {/* linchart section  */}
 
@@ -245,7 +245,7 @@ const Single = (props: Props) => {
 };
 
 
-export default Single;
+export default FieldTwo;
 
 
 

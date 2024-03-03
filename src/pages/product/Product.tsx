@@ -1,14 +1,13 @@
 import "./product.scss"
 
-import Single from "../../components/single/Single"
-import { singleProduct } from "../../data"
+import FieldComponent from "../../components/FieldContent/FieldComponent"
 
 const Product = () => {
 
   //Fetch data and send to Single Component
   return (
     <div className="product">
-       <Single {...singleProduct}/>
+       <FieldComponent fieldName="F1" localStorageKeys={{ deviceName: "reportCurrentDeviceF1", deviceId: "selectedDeviceIDF1" }}  />
     </div>
   )
 }

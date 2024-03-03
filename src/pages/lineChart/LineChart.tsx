@@ -8,8 +8,30 @@ import { useEffect, useState } from 'react';
 // import { chartBoxUser } from '../../data';
 import LineCard from '../../components/LineChart/LineCard';
 import { io } from 'socket.io-client';
-import { AdjustData, ChartData, SocketData } from '../../components/LineChart/types';
+import { AdjustData, ChartData, DataPayload, SocketData } from '../../components/LineChart/types';
 import { Button } from '@mui/material';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { addDeviceData } from '../../state/Slices/realTimeDataSlice';
+
+
+
+export type DeviceData = {
+  [parameter: string]: ChartData;
+};
+
+const transformDataPayload = (dataPayload: DataPayload): DeviceData => {
+  const result: DeviceData = {}
+  const { time, ...parameters } = dataPayload
+  Object.entries(parameters).forEach(([key, value]) => {
+    const chartData: ChartData = {
+      time: time.toString(),
+      value
+    }
+    result[key] = chartData
+  })
+  return result
+}
+
 
 
 export default function LineChart() {
@@ -52,15 +74,26 @@ export default function LineChart() {
     const socket = io('https://agriculture-app.onrender.com/' || "http://localhost:3000/")
     socket.on("mqttMessage", (data: SocketData) => {
       const { deviceName, parameters } = data;
+      console.log("🚀 ~ socket.on ~ parameters:", parameters)
       console.log(data);
 
+      const transformData = transformDataPayload(parameters)
+      console.log("🚀 ~ socket.on ~ transformData:", transformData)
 
+      // const dispatch = useDispatch()
+      // dispatch(addDeviceData({ deviceName, data: transformData }))
+      // const selectedDeviceData = useSelector(state => state.deviceData);
+      
+      
       const date = new Date(parameters.time)
+
+
       // const month = date.getUTCMonth() + 1; // Months are 0-based, so add 1
       // const day = date.getUTCDate();
       date.setHours(date.getHours() + 2);
 
       const adjustedTime = date.toISOString().slice(11, 19);
+
 
       Object.entries(parameters).forEach(([parameter, value]) => {
         const newData: ChartData = {

@@ -3,26 +3,26 @@ import { FormData, columns } from './tableData.interface';
 
 
 export default function TableOfAllData(data: FormData) {
-console.log("🚀 ~ TableOfAllData ~ data:", data)
+    console.log("🚀 ~ TableOfAllData ~ data:", data)
 
 
-  
 
-    const modifiedData = data.data.map(obj => {
+
+    const modifiedData = data.data.map((obj, i) => {
         const { _id, ...rest } = obj
-        return { id: _id, ...rest }
+        return { id: i + 1, ...rest }
     })
 
-    return ( 
+    return (
         <div className="products">
             <div className="info">
                 <h1>Device data</h1>
             </div>
 
-            <DataTable slug="Parameters " columns={columns} rows={modifiedData}/>
+            <DataTable slug="Parameters " columns={columns} rows={modifiedData} />
 
-      
-          
+
+
         </div>
     );
 };
