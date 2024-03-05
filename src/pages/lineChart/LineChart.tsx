@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import LineCard from '../../components/LineChart/LineCard';
 import { io } from 'socket.io-client';
 import { AdjustData, ChartData, DataPayload, SocketData } from '../../components/LineChart/types';
-import { Button } from '@mui/material';
+import { Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { addDeviceData } from '../../state/Slices/realTimeDataSlice';
 
@@ -37,7 +37,7 @@ const transformDataPayload = (dataPayload: DataPayload): DeviceData => {
 export default function LineChart() {
   const [selectDevice, setSelectDevice] = useState("1")
 
-
+  const [selectField, setSelectField] = useState("F1")
 
   // 1&2&3 are devices names but now i just have one device 
   const [lineChartData, setLineChartData] = useState<Record<string, AdjustData>>({
@@ -83,8 +83,8 @@ export default function LineChart() {
       // const dispatch = useDispatch()
       // dispatch(addDeviceData({ deviceName, data: transformData }))
       // const selectedDeviceData = useSelector(state => state.deviceData);
-      
-      
+
+
       const date = new Date(parameters.time)
 
 
@@ -120,28 +120,63 @@ export default function LineChart() {
     })
   }, [])
 
-  useEffect(() => {
-    console.log(lineChartData);
-    console.log(Object.keys(lineChartData));
-
-
-  }, [lineChartData])
-  const handleDevicesData = (deviceName: string) => {
-    if (deviceName == "1" || deviceName == "2" || deviceName == "3") {
-      setSelectDevice(deviceName)
-    }
+ 
+  function handleDviceNameChange(e: SelectChangeEvent<string>) {
+    setSelectDevice(e.target.value)
   }
+  function handleFieldChang(e: SelectChangeEvent<string>) {
+    setSelectDevice(e.target.value)
+  }
+
+  
   return (
     <>
       <div className="">
         <div className="box ">
+          <FormControl sx={{ m: 1, minWidth: 120 }} >
+          <InputLabel id="field-select-label">Field</InputLabel>
+  <Select
+    labelId="field-select-label"
+    id="field-select"
+    value={selectField}
+    label="selectedField"
+    onChange={handleFieldChang}
+  >
+              <MenuItem value={0}>
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={"F1"}>Field One</MenuItem>
+              <MenuItem value={"F2"}>Field Two</MenuItem>
+              <MenuItem value={"F3"}>Field Three</MenuItem>
+            </Select>
+            <FormHelperText>selectedField</FormHelperText>
 
-          {Object.keys(lineChartData).map(deviceName => (
+          </FormControl>
+          <FormControl sx={{ m: 1, minWidth: 120 }} >
+            <InputLabel id="demo-simple-select-label">Devices</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select-disabled"
+              value={selectDevice}
+              label="selectedDevice"
+              onChange={handleDviceNameChange}
+            >
+              <MenuItem value={0}>
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value={"1"}>Device One</MenuItem>
+              <MenuItem value={"2"}>Device Two</MenuItem>
+              <MenuItem value={"3"}>Device Three</MenuItem>
+            </Select>
+            <FormHelperText>selectedDevice</FormHelperText>
+
+          </FormControl>
+          {/* {Object.keys(lineChartData).map(deviceName => (
             <Button key={deviceName} className='btn m-5' onClick={() => { handleDevicesData(deviceName) }}
             >
               device {deviceName}
             </Button>
-          ))}
+          ))} */}
         </div>
 
         <div className="box box7">
