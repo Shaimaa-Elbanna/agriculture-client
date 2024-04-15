@@ -31,32 +31,16 @@ export default function LineChart({ deviceData }: LineChartProps) {
 <AlertData data={deviceData}/>
       <div className="lineCard">
 
-      </div>
       <div className="lines">
-        <div className="box box7">
-          <Line1 data={deviceData.T} value={"T/Tempreture"} />
-        </div>
-        <div className="box box7">
-          <Line1 data={deviceData.S} value={"S/Soil"} />
-        </div>
-      </div>
-      <div className="lines">
-        <div className="box box7">
-          <Line1 data={deviceData.H} value={"H/humidity"} />
-        </div>
-        <div className="box box7">
-          <Line1 data={deviceData.PH} value={"PH"} />
-        </div>
-        <div className="box box7">
-          <Line1 data={deviceData.N} value={"N"} />
-        </div>
-        <div className="box box7">
-          <Line1 data={deviceData.PHO} value={"PHO"} />
-        </div>
-        <div className="box box7">
-          <Line1 data={deviceData.POT} value={"POT"} />
+        {Object.entries(deviceData).map(([key,value])=>(
+  <div className="box box7">
+  <Line1 data={value} value={key} />
+</div>
+  ))}
+          
         </div>
       </div>
+     
     </>
   );
 }
