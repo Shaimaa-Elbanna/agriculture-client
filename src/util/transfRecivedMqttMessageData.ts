@@ -1,28 +1,21 @@
-import { AdjustData, DataPayload } from "../components/LineChart/types";
+import { ChartData, DataPayload } from '../components/LineChart/types';
 
-export const transformAndAdjustData = (data: DataPayload): AdjustData => {
-    const date = new Date(data.time);
-    date.setHours(date.getHours() + 2);
-    const adjustedTime = date.toISOString().slice(11, 19);
-  
-    const defaultAdjustData: AdjustData = {
-      T: [],
-      S: [],
-      PH: [],
-      N: [],
-      H: [],
-      PHO: [],
-      POT: [],
+export const transformDataPayload = (dataPayload: DataPayload): Record<string, ChartData[]> => {
+  const result: Record<string, ChartData[]> = {};
+  const { time, ...parameters } = dataPayload;
+  const date = new Date(parseInt(time));
+  date.setHours(date.getHours() + 2);
+  const adjustedTime = date.toISOString().slice(11, 19);
+  Object.entries(parameters).forEach(([key, value]) => {
+    const chartData: ChartData = {
+      time: adjustedTime,
+      value,
     };
-  
-    for (const [param, value] of Object.entries(data)) {
-      if (param in defaultAdjustData) {
-        defaultAdjustData[param as keyof AdjustData].push({
-          time: adjustedTime,
-          value: parseInt(value),
-        });
-      }
+    if (!result[key]) {
+      result[key] = [];
     }
-  
-    return defaultAdjustData;
-  };
+    result[key].push(chartData);
+  });
+  console.log('🚀 ~ transformDataPayload ~ result:', result);
+  return result;
+};

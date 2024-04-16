@@ -14,7 +14,7 @@ export interface DataPayload {
   PH?: number;
   PHO?: number;
   POT?: number;
-  time: Date;
+  time: Date|string;
 }
 
 export interface ChartData {

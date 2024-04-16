@@ -6,6 +6,7 @@ export function useSocket(url: string, onDataReceived: (deviceName: string, data
     useEffect(() => {
       const socket = io(url);
       socket.on("mqttMessage", (data: SocketData) => {
+        console.log("🚀 ~ socket.on ~ data:", data)
         onDataReceived(data.deviceName, data.parameters);
       });
   
