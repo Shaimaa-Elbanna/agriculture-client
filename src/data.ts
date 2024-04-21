@@ -95,24 +95,24 @@ export const menu = [
   //     },
   //   ],
   // },
-  // {
-  //   id: 5,
-  //   title: 'analytics',
-  //   listItems: [
-  //     {
-  //       id: 1,
-  //       title: 'Charts',
-  //       url: '/',
-  //       icon: 'chart.svg',
-  //     },
-  //     {
-  //       id: 2,
-  //       title: 'Logs',
-  //       url: '/',
-  //       icon: 'log.svg',
-  //     },
-  //   ],
-  // },
+  {
+    id: 5,
+    title: 'Controll',
+    listItems: [
+      // {
+      //   id: 1,
+      //   title: 'Charts',
+      //   url: '/',
+      //   icon: 'chart.svg',
+      // },
+      {
+        id: 2,
+        title: 'controll',
+        url: '/controll',
+        icon: 'log.svg',
+      },
+    ],
+  },
 ];
 
 export const topDealUsers = [

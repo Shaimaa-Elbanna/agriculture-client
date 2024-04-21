@@ -1,0 +1,14 @@
+.time-picker {
+    input[type='time'] {
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      outline: none;
+      width: 10rem;
+
+      &:focus {
+        border: 2px solid rgb(39, 45, 215);
+      }
+    }
+  }
