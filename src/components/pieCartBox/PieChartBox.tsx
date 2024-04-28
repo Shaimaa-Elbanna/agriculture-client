@@ -3,10 +3,10 @@ import "./pieChartBox.scss";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 const data = [
-  { name: "Mobile", value: 400, color: "#0088FE" },
-  { name: "Desktop", value: 300, color: "#00C49F" },
-  { name: "Laptop", value: 300, color: "#FFBB28" },
-  { name: "Tablet", value: 200, color: "#FF8042" },
+  { name: "Wheat", value: 400, color: "#0088FE" },
+  { name: "Corn", value: 300, color: "#00C49F" },
+  { name: "Rice", value: 300, color: "#FFBB28" },
+  { name: "Barley", value: 200, color: "#FF8042" },
 ];
 
 const PieChartBox = () => {

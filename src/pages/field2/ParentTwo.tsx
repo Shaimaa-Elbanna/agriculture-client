@@ -10,7 +10,6 @@ const ParentTwo = () => {
   return (
     <div className="product">
        <FieldComponent fieldName="F2" localStorageKeys={{ deviceName: "reportCurrentDeviceF2", deviceId: "selectedDeviceIDF2" }}  />
-
     </div>
   )
 }

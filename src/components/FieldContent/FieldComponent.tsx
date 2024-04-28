@@ -18,6 +18,7 @@ interface LocalStorageKeys {
 }
 export default function FieldComponent({fieldName,localStorageKeys}:FieldComponentProps) {
   const [selectedDevice, setSelectedDevice] = useState(getDataFromLocalStorage(localStorageKeys.deviceName, "1"))
+  console.log("🚀 ~ selectedDevice:", selectedDevice)
 
    // start time and date vars 
    const [selectedTime, setSelectedTime] = useState("")
@@ -196,13 +197,12 @@ export default function FieldComponent({fieldName,localStorageKeys}:FieldCompone
 
           </div>
         </div>
-        <hr />
 
         {/* device info section  */}
-        <div className="info">
+        {/* <div className="info">
           <div className="topInfo">
             {/* {props.img && <img src={props.img} alt="" />} */}
-            <h1>{data && fieldData?.deviceName ? "Device" + fieldData?.deviceName : "No Data"}</h1>
+            {/* <h1>{data && fieldData?.deviceName ? "Device" + fieldData?.deviceName : "No Data"}</h1>
           </div>
           <div className="details">
             <div className="item" >
@@ -223,12 +223,15 @@ export default function FieldComponent({fieldName,localStorageKeys}:FieldCompone
             </div>
 
           </div>
-        </div>
+        </div> */}
         {/* device info section  */}
 
 
         {/* linchart section  */}
-
+        <div className="item " style={{marginTop:"20px",marginBottom:"10px"}} >
+              <span className="itemTitle"> Start Date:</span>
+              <span className="itemValue">{selectedDate ? selectedDate : defaultSatrtAndEndDate}</span>
+            </div>
         <CompareLineChart currentDeviceId={fieldData?fieldData._id : ""} startTime={startTimePickerActive ? "08:00" : selectedTime} startDate={startDatePickerActive ? defaultSatrtAndEndDate : selectedDate} endTime={endTimePickerActive ? "22:00" : selectedEndTime} endDate={endDatePickerActive ? "" : selectedEndDate} />
 
         {/* linchart section  */}

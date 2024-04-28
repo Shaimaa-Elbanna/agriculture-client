@@ -1,10 +1,10 @@
-import secondImg from '../../../styles/img/images-removebg-preview.png'
+import secondImg from '../../../styles/img/12b8bf-20060810-cornplant.jpg'
 
 export default function SecondPlant() {
   return (
-    <div style={{ display: "flex",alignItems: "center",  flexDirection: "column" ,width:"50%"}}>
-    <img src={secondImg} alt="" style={{ width: "90%" }} />
-    <h4>Annual vince</h4>
+    <div style={{ display: "flex",alignItems: "center",  flexDirection: "column" ,width:"85%"}}>
+    <img src={secondImg} alt="" style={{ width: "100%" }} />
+    <h4>Corn</h4>
 
     </div >  )
 }

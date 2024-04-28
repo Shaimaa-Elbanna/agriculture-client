@@ -39,9 +39,9 @@ const Dashboard = () => {
         <ThirdPlant/>
       </div>
       
-      <div className="box box1">
+      {/* <div className="box box1">
         <TopBox />
-      </div>
+      </div> */}
       <div className="box box4">
         <PieChartBox />
       </div>

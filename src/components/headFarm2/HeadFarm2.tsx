@@ -4,7 +4,7 @@ import img from '../../styles/img/bright-living-room-with-a-large-house-plant-co
 export default function HeadFarm2() {
   return (
     <div className="secondFram">
-    <h2>My stat </h2>
+    <h2>My State </h2>
     <div className="list">
       
         <div className="listItem headColor" >

@@ -15,7 +15,7 @@ const ControllComponent = ({ repeat, scenario }: props) => {
 
   const minutes = Array.from({ length: 60 }, (_, i) => i + 1 == 1 ? "1 min" : i + 1 + " mins");
   const interval = ["Day", "Week", "Month"];
-  const repetition = ["1", "2", "3", "4", "5"]
+   const repetition = ["1", "2", "3", "4", "5"]
   const generateWateringInputs = () => {
     return Array.from({ length: controllData?.repetition || 1 }, (_, index) => (
       <div key={index}>
@@ -86,7 +86,7 @@ const ControllComponent = ({ repeat, scenario }: props) => {
 
   controllData && (controllData.scenario = scenario);
   controllData && (controllData.status = "On");
-  {controllData && controllData.repetition !== 1 && !repeat && (controllData.repetition=1)}
+  { controllData && controllData.repetition !== 1 && !repeat && (controllData.repetition = 1) }
 
   function handleControllData(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
@@ -124,7 +124,6 @@ const ControllComponent = ({ repeat, scenario }: props) => {
     }
   }
 
-  console.log("🚀 ~ ControllComponent ~ controllData:", controllData)
 
   return (
     <>
@@ -132,6 +131,27 @@ const ControllComponent = ({ repeat, scenario }: props) => {
         <Box p={2}>
 
 
+          <Box mt={2}>
+            <Autocomplete
+              freeSolo
+              id="free-solo-1-demo"
+              disableClearable
+              options={repetition.map((option) => option)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select rate"
+                  InputProps={{
+                    ...params.InputProps,
+                    type: 'search',
+                  }}
+                  name="rate"
+                  onSelect={handleControllData}
+                  sx={{ width: 300 }}
+                />
+              )}
+            />
+          </Box>
           <Box mt={2}>
             <Autocomplete
               freeSolo

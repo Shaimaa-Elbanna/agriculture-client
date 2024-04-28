@@ -199,10 +199,9 @@ const Single = (props: Props) => {
 
           </div>
         </div>
-        <hr />
 
         {/* device info section  */}
-        <div className="info">
+        {/* <div className="info">
           <div className="topInfo">
             {props.img && <img src={props.img} alt="" />}
             <h1>{data && data[0]?.deviceName ? "Device" + data[0].deviceName : "No Data"}</h1>
@@ -226,9 +225,12 @@ const Single = (props: Props) => {
             </div>
 
           </div>
-        </div>
+        </div> */}
         {/* device info section  */}
-
+        <div className="item " style={{marginTop:"20px",marginBottom:"10px"}} >
+              <span className="itemTitle"> Start Date:</span>
+              <span className="itemValue">{selectedDate ? selectedDate : defaultSatrtAndEndDate}</span>
+            </div>
 
         {/* linchart section  */}
 

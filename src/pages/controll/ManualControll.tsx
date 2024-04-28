@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormHelperText, Grid, MenuItem, Paper, Select, Typography } from '@mui/material'
+import { Autocomplete, Box, Button, FormControl, FormHelperText, Grid, MenuItem, Paper, Select, TextField, Typography } from '@mui/material'
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useStopwatch } from 'react-timer-hook';
@@ -8,8 +8,9 @@ export default function ManualControll() {
         scenario: "S3",
         status: ""
     });
+     const repetition = ["1", "2", "3", "4", "5"]
 
-    const { seconds, minutes, hours, start, reset,pause } = useStopwatch({ autoStart: false });
+    const { seconds, minutes, hours, start, reset, pause } = useStopwatch({ autoStart: false });
 
     async function submitData(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -40,6 +41,27 @@ export default function ManualControll() {
                 <Grid item xs={12} sm={6}>
                     <Paper style={{ padding: '20px' }}>
                         <form onSubmit={submitData}>
+                        <Box mt={2}>
+            <Autocomplete
+              freeSolo
+              id="free-solo-1-demo"
+              disableClearable
+              options={repetition.map((option) => option)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Select rate"
+                  InputProps={{
+                    ...params.InputProps,
+                    type: 'search',
+                  }}
+                  name="rate"
+                  sx={{ width: 300 }}
+                />
+              )}
+            />
+          </Box>
+
                             <Box mt={2}>
                                 <FormControl sx={{ minWidth: 50 }}>
                                     <FormHelperText>Select Status</FormHelperText>
@@ -57,6 +79,7 @@ export default function ManualControll() {
                                     </Select>
                                 </FormControl>
                             </Box>
+      
                             <Button sx={{ m: 2, background: "cyan" }} type="submit">Submit</Button>
                         </form>
                     </Paper>
@@ -75,7 +98,7 @@ export default function ManualControll() {
                                 <span>{seconds}</span>
                             </div>
                             <div>
-                              
+
                             </div>
                         </div>
                     </Paper>
