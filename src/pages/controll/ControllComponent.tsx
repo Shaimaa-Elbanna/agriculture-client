@@ -85,7 +85,6 @@ const ControllComponent = ({ repeat, scenario }: props) => {
 
 
   controllData && (controllData.scenario = scenario);
-  controllData && (controllData.status = "On");
   { controllData && controllData.repetition !== 1 && !repeat && (controllData.repetition = 1) }
 
   function handleControllData(e: React.ChangeEvent<HTMLInputElement>) {
