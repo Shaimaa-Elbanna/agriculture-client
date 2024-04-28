@@ -11,7 +11,6 @@ import Menu from "./components/menu/Menu";
 import Navbar from "./components/navbar/Navbar";
 import Dashboard from "./pages/dashboard/dashboard";
 import LineChart from "./pages/lineChart/LineChart";
-import Login from "./pages/controll/Controll";
 import Product from "./pages/product/Product";
 import Products from "./pages/products/Products";
 import User from "./pages/user/User";
@@ -21,7 +20,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ParentTwo from "./pages/field2/ParentTwo";
 import ParentThree from "./pages/field3/ParentThree";
-import Controll from "./pages/controll/Controll";
+import ContolPage from "./pages/controll/ContolPage";
 
 const queryClient = new QueryClient();
 
@@ -85,21 +84,21 @@ function App() {
         {
           path: "/fieldthree",
           element: <ParentThree />,
-        },{
+        }, {
           path: "/controll",
-            element: <Controll />,
-            },
-        
-  ],
+          element: <ContolPage />,
+        },
+
+      ],
     },
-{
-  path: "/controll",
-    element: <Controll />,
+    {
+      path: "/controll",
+      element: <ContolPage />,
     },
   ]);
 
-return (<><RouterProvider router={router} />
-  <ToastContainer /></>);
+  return (<><RouterProvider router={router} />
+    <ToastContainer /></>);
 }
 
 export default App;

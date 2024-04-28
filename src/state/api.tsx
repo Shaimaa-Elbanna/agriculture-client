@@ -3,7 +3,7 @@ import { Device } from "./types/device";
 import { TopicsData } from "./types/topics";
 
 export const api = createApi({
-    baseQuery: fetchBaseQuery({ baseUrl: "https://agriculture-app.onrender.com/" }),
+    baseQuery: fetchBaseQuery({ baseUrl: "https://agriculturedash.onrender.com/" || "https://agriculture-app.onrender.com/" }),
     reducerPath: "main",
     tagTypes: ["device", 'topic'],
 

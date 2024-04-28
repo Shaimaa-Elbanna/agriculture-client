@@ -3,7 +3,7 @@ import { ChartData, DataPayload } from '../components/LineChart/types';
 export const transformDataPayload = (dataPayload: DataPayload): Record<string, ChartData[]> => {
   const result: Record<string, ChartData[]> = {};
   const { time, ...parameters } = dataPayload;
-  const date = new Date(parseInt(time));
+  const date = new Date(parseInt(time.toString()));
   date.setHours(date.getHours() + 2);
   const adjustedTime = date.toISOString().slice(11, 19);
   Object.entries(parameters).forEach(([key, value]) => {
