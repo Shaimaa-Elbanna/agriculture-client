@@ -1,16 +1,13 @@
-
-
 interface Controll {
-  scenario: string;
-  watering: Watering[];
+  scenario: number
+  watering: Watering[]
+  interval: number
 
-  interval: string;
-
-  repetition: number|1;
-  status: string;
+  repetition: number | 1;
+  status?: number 
 }
 
 interface Watering {
-  startTime: string;
-  duration: string;
+  startTime: number 
+  duration: number
 }

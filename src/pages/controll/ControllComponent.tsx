@@ -1,68 +1,28 @@
-import { Autocomplete, Box, Button, TextField } from "@mui/material";
-import { useState } from "react";
+import { Autocomplete, Box, Button, TextField, Typography, useTheme } from "@mui/material";
+import { useEffect, useState } from "react";
 import axios from "axios"
 import './controll.css';
+import { generateWateringInputs } from "./generateWateringInput";
 
 
 interface props {
   repeat: boolean,
-  scenario: string
+  scenario: number
 }
 
 const ControllComponent = ({ repeat, scenario }: props) => {
+
+  const theme = useTheme();
+
   const [controllData, setControllData] = useState<Controll | undefined>();
+  const [apiData, setApiData] = useState("")
 
 
-  const minutes = Array.from({ length: 60 }, (_, i) => i + 1 == 1 ? "1 min" : i + 1 + " mins");
-  const interval = ["Day", "Week", "Month"];
-   const repetition = ["1", "2", "3", "4", "5"]
-  const generateWateringInputs = () => {
-    return Array.from({ length: controllData?.repetition || 1 }, (_, index) => (
-      <div key={index}>
-        <Box mt={2}>
-          <Autocomplete
-            freeSolo
-            id={`free-solo-${index}-demo`}
-            disableClearable
-            options={minutes.map((option) => option)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label={`Select duration ${index + 1}`}
-                InputProps={{
-                  ...params.InputProps,
-                  type: 'search',
-                }}
-                value={(controllData && controllData.watering && controllData.watering[index] && controllData.watering[index].duration) || ''}
-                name={`duration_${index}`}
-                onSelect={handleControllData}
-                sx={{ width: 300 }}
-              />
-            )}
-          />
-        </Box>
+  const interval = Array.from({ length: 30 }, (_, i) => i + 1 == 1 ? 1 + " day" : i + 1 + " days");
+  const repetition = ["1", "2", "3", "4", "5"]
 
 
-        <Box mt={2}>
-          <div className='time-picker active '>
-            <span>select start time  {index + 1}  :      </span>
-
-            <input
-              type="time"
-              value={(controllData && controllData.watering && controllData.watering[index] && controllData.watering[index]?.startTime) || ''}
-              onChange={handleControllData}
-              name={`startTime_${index}`}
-
-            />
-          </div>
-
-        </Box>
-        {index < (controllData?.repetition || 1) - 1 && <hr style={{ maxWidth: 700, marginBottom: "5px", marginTop: "10px" }} />}
-      </div>
-    ))
-  }
-
-  const wateringInputs = generateWateringInputs()
+  const wateringInputs = generateWateringInputs(controllData, handleControllData)
 
 
 
@@ -73,8 +33,25 @@ const ControllComponent = ({ repeat, scenario }: props) => {
 
   async function submitData(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+
     try {
       const submitData = await axios.post("http://localhost:3000/controll", controllData)
+       setApiData(submitData?.data)
+      // if (apiData == "Message published successfully") {
+      //   setControllData(
+      //     {
+      //       scenario: 0,
+      //       status: 0,
+      //       interval: 0,
+      //       repetition: 1,
+      //       watering: []
+
+      //     });
+          
+      //   }
+        console.log(controllData);
+
+      console.log("🚀 ~ submitData ~ apiData:", apiData)
       console.log("🚀 ~ submitData ~ submitData:", submitData)
     } catch (error) {
       console.log(error);
@@ -82,6 +59,7 @@ const ControllComponent = ({ repeat, scenario }: props) => {
     }
 
   }
+  console.log("🚀 ~ submitData ~ apiData:", apiData)
 
 
   controllData && (controllData.scenario = scenario);
@@ -95,10 +73,15 @@ const ControllComponent = ({ repeat, scenario }: props) => {
     if (fieldName === "startTime" || fieldName === "duration") {
       setControllData(prevData => {
         const updatedWatering = [...(prevData?.watering || [])];
+        const [hoursStr, minutesStr] = value.split(":");
+        const hours = parseInt(hoursStr, 10);
+        const minutes = parseInt(minutesStr, 10);
+        const totalMinutes = hours * 60 + minutes
         updatedWatering[index] = {
           ...(updatedWatering[index] || {}),
-          [fieldName]: value.split(" ")[0]
+          [fieldName]: fieldName == "startTime" ? totalMinutes : parseInt(value.split(" ")[0])
         };
+
         return {
           ...prevData!,
           watering: updatedWatering
@@ -109,13 +92,13 @@ const ControllComponent = ({ repeat, scenario }: props) => {
         ...prevData!,
         repetition: parseInt(value) || 1,
       }));
-    } else if (fieldName === "scenario" || fieldName === "status") {
+    } else if (fieldName === "interval") {
       setControllData(prevData => ({
         ...prevData!,
-        scenario: scenario,
-        status: "On",
+        interval: parseInt(value.split(" ")[0]) ,
       }));
-    } else {
+    }
+    else {
       setControllData(prevData => ({
         ...prevData!,
         [fieldName]: value,
@@ -129,6 +112,7 @@ const ControllComponent = ({ repeat, scenario }: props) => {
       <form onSubmit={submitData}>
         <Box p={2}>
 
+  
 
           <Box mt={2}>
             <Autocomplete
@@ -145,7 +129,6 @@ const ControllComponent = ({ repeat, scenario }: props) => {
                     type: 'search',
                   }}
                   name="rate"
-                  onSelect={handleControllData}
                   sx={{ width: 300 }}
                 />
               )}
@@ -159,15 +142,16 @@ const ControllComponent = ({ repeat, scenario }: props) => {
               options={interval.map((option) => option)}
               renderInput={(params) => (
                 <TextField
-                  {...params}
-                  label="Select interval"
-                  InputProps={{
-                    ...params.InputProps,
-                    type: 'search',
-                  }}
-                  value={controllData?.interval}
-                  name="interval"
+                {...params}
+                label="Select interval"
+                InputProps={{
+                  ...params.InputProps,
+                  type: 'search',
+                }}
+                name="interval"
+                value={controllData?.interval}
                   onSelect={handleControllData}
+
                   sx={{ width: 300 }}
                 />
               )}
@@ -177,7 +161,7 @@ const ControllComponent = ({ repeat, scenario }: props) => {
 
 
 
-          {repeat ?
+          {repeat && (
             <Box mt={2}>
               <Autocomplete
                 freeSolo
@@ -201,8 +185,7 @@ const ControllComponent = ({ repeat, scenario }: props) => {
                 )}
               />
             </Box>
-            :
-            ""
+          )
           }
           {repeat && <hr style={{ maxWidth: 700, marginBottom: "5px", marginTop: "10px" }} />}
 
@@ -210,6 +193,15 @@ const ControllComponent = ({ repeat, scenario }: props) => {
 
 
         </Box>
+        {apiData ?
+          <Typography padding={2} sx={{ color: theme.palette.primary.main, width: "50rem", fontWeight: 'bold' }}>
+            {apiData}
+          </Typography> :
+          <Typography padding={2} sx={{ width: "50rem", color: "gray" }} >
+            All data is required
+          </Typography>
+        }
+
         <Button sx={{ m: 2, background: "cyan" }} type="submit" >Submit</Button>
 
       </form>

@@ -8,13 +8,13 @@ interface LineChartProps {
 }
 
 const LIMITS = {
-    T: 30, // Example limit for Temperature
-    S: 50, // Example limit for Solidity
+    T: 100, // Example limit for Temperature
+    S: 80, // Example limit for Solidity
     PH: 10, // Example limit for pH
-    N: 20, // Example limit for Nitrogen
-    H: 80, // Example limit for Humidity
+    N: 90, // Example limit for Nitrogen
+    H: 100, // Example limit for Humidity
     PHO: 20, // Example limit for Phosphate
-    POT: 40, // Example limit for Potassium
+    POT: 60, // Example limit for Potassium
 };
 
 

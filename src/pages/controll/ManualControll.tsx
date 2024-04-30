@@ -5,10 +5,10 @@ import { useStopwatch } from 'react-timer-hook';
 
 export default function ManualControll() {
     const [value, setValue] = useState({
-        scenario: "S3",
-        status: ""
+        scenario: 3,
+        status: 0
     });
-     const repetition = ["1", "2", "3", "4", "5"]
+    const rate = ["1", "2", "3", "4", "5"]
 
     const { seconds, minutes, hours, start, reset, pause } = useStopwatch({ autoStart: false });
 
@@ -18,10 +18,10 @@ export default function ManualControll() {
             const submitData = await axios.post("http://localhost:3000/controll", value)
             console.log("🚀 ~ submitData ~ submitData:", submitData)
             if (submitData.data === 'Message published successfully') {
-                if (value.status === "On") {
+                if (value.status === 1) {
                     // Your logic when status is "On"
                     start(); // Start the stopwatch when status is "On"
-                } else if (value.status === "Off") {
+                } else if (value.status === 0) {
                     // Your logic when status is "Off"
                     reset(); // Pause the stopwatch when status is "Off"
                     pause()
@@ -41,26 +41,26 @@ export default function ManualControll() {
                 <Grid item xs={12} sm={6}>
                     <Paper style={{ padding: '20px' }}>
                         <form onSubmit={submitData}>
-                        <Box mt={2}>
-            <Autocomplete
-              freeSolo
-              id="free-solo-1-demo"
-              disableClearable
-              options={repetition.map((option) => option)}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Select rate"
-                  InputProps={{
-                    ...params.InputProps,
-                    type: 'search',
-                  }}
-                  name="rate"
-                  sx={{ width: 300 }}
-                />
-              )}
-            />
-          </Box>
+                            <Box mt={2}>
+                                <Autocomplete
+                                    freeSolo
+                                    id="free-solo-1-demo"
+                                    disableClearable
+                                    options={rate.map((option) => option)}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            label="Select rate"
+                                            InputProps={{
+                                                ...params.InputProps,
+                                                type: 'search',
+                                            }}
+                                            name="rate"
+                                            sx={{ width: 300 }}
+                                        />
+                                    )}
+                                />
+                            </Box>
 
                             <Box mt={2}>
                                 <FormControl sx={{ minWidth: 50 }}>
@@ -74,12 +74,12 @@ export default function ManualControll() {
                                         name="status"
                                         sx={{ width: 300 }}
                                     >
-                                        <MenuItem value={'On'}>On</MenuItem>
-                                        <MenuItem value={'Off'}>Off</MenuItem>
+                                        <MenuItem value={0}>Off</MenuItem>
+                                        <MenuItem value={1}>On</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Box>
-      
+
                             <Button sx={{ m: 2, background: "cyan" }} type="submit">Submit</Button>
                         </form>
                     </Paper>
@@ -89,7 +89,7 @@ export default function ManualControll() {
                 <Grid item xs={12} sm={6}>
                     <Paper style={{ padding: '20px' }}>
                         <Typography variant="body1">
-                            Current status is {value.status ? value.status : "Off"}
+                            Current status is {value.status=== 1 ? "On" : "Off"}
                         </Typography>
                         <div>
                             <div>

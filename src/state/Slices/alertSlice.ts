@@ -8,54 +8,7 @@ interface CheckLimitsActionPayload {
 }
 
 
-// for array of data 
-// interface AlertState {
-//   exceededLimits: { measurement: string; exceededValues: ChartData[] }[];
-// }
 
-// const initialState: AlertState = {
-//   exceededLimits: [],
-// };
-
-
-// array of alerts 
-// const AlertSlice = createSlice({
-//   name: 'alert',
-//   initialState,
-//   reducers: {
-//     checkLimits: (state, action: PayloadAction<CheckLimitsActionPayload>) => {
-//       const { data, LIMITS } = action.payload;
-//       const entries = Object.entries(data);
-//       entries.pop();
-//       let exceeded: { measurement: string; exceededValues: ChartData[] }[] = [];
-//       entries.forEach(([measurement, values]) => {
-//         const limit = LIMITS[measurement] || 0;
-//         const exceededValues = values.filter(value => {
-//          return value.value > limit;
-//         });
-//         if (exceededValues.length > 0) {
-//           exceeded.push({ measurement, exceededValues });
-//           // Triggering toast here for each exceeded limit
-//           toast.error(
-//             `Limit exceeded for ${measurement}: ${exceededValues
-//               .map(v => `${v.value} at ${v.time}`)
-//               .join(', ')}`,
-//             {
-//               position: 'top-right',
-//               autoClose: 5000,
-//               hideProgressBar: false,
-//               closeOnClick: true,
-//               pauseOnHover: true,
-//               draggable: true,
-//               progress: undefined,
-//             },
-//           );
-//         }
-//       });
-//       state.exceededLimits = exceeded;
-//     },
-//   },
-// });
 
 
 interface AlertState {

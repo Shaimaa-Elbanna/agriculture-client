@@ -17,7 +17,7 @@ export default function ContolPage() {
                     <Typography  variant="h5" >Watering once a day</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <ControllComponent repeat={false} scenario="S1" />
+                    <ControllComponent repeat={false} scenario={1} />
 
                 </AccordionDetails>
             </Accordion>
@@ -30,7 +30,7 @@ export default function ContolPage() {
                     <Typography variant="h5">Watering multiple times a day</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <ControllComponent repeat={true} scenario="S2" />
+                    <ControllComponent repeat={true} scenario= {2 }/>
                 </AccordionDetails>
             </Accordion>
             <Accordion>
