@@ -1,5 +1,5 @@
 import { Autocomplete, Box, Button, TextField, Typography, useTheme } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios"
 import './controll.css';
 import { generateWateringInputs } from "./generateWateringInput";
@@ -11,65 +11,50 @@ interface props {
 }
 
 const ControllComponent = ({ repeat, scenario }: props) => {
-
+  // Theme hook from Material-UI
   const theme = useTheme();
 
+  // State for form data and API response
   const [controllData, setControllData] = useState<Controll | undefined>();
   const [apiData, setApiData] = useState("")
 
 
+  // Options for interval and repetition
   const interval = Array.from({ length: 30 }, (_, i) => i + 1 == 1 ? 1 + " day" : i + 1 + " days");
   const repetition = ["1", "2", "3", "4", "5"]
 
 
+  // Generate watering inputs based on controllData
   const wateringInputs = generateWateringInputs(controllData, handleControllData)
 
 
 
-
-
-
-
-
+  // Submit form data to the API
   async function submitData(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
     try {
       const submitData = await axios.post("http://localhost:3000/controll", controllData)
-       setApiData(submitData?.data)
-      // if (apiData == "Message published successfully") {
-      //   setControllData(
-      //     {
-      //       scenario: 0,
-      //       status: 0,
-      //       interval: 0,
-      //       repetition: 1,
-      //       watering: []
+      setApiData(submitData?.data)
 
-      //     });
-          
-      //   }
-        console.log(controllData);
-
-      console.log("🚀 ~ submitData ~ apiData:", apiData)
-      console.log("🚀 ~ submitData ~ submitData:", submitData)
     } catch (error) {
       console.log(error);
 
     }
 
   }
-  console.log("🚀 ~ submitData ~ apiData:", apiData)
 
 
   controllData && (controllData.scenario = scenario);
   { controllData && controllData.repetition !== 1 && !repeat && (controllData.repetition = 1) }
 
+  // Update form data based on user input
   function handleControllData(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     const [fieldName, indexStr] = name.split("_");
     const index = parseInt(indexStr);
 
+    // Update watering data
     if (fieldName === "startTime" || fieldName === "duration") {
       setControllData(prevData => {
         const updatedWatering = [...(prevData?.watering || [])];
@@ -88,17 +73,20 @@ const ControllComponent = ({ repeat, scenario }: props) => {
         };
       });
     } else if (fieldName === "repetition") {
+      // Update repetition
       setControllData(prevData => ({
         ...prevData!,
         repetition: parseInt(value) || 1,
       }));
     } else if (fieldName === "interval") {
+      // Update interval
       setControllData(prevData => ({
         ...prevData!,
-        interval: parseInt(value.split(" ")[0]) ,
+        interval: parseInt(value.split(" ")[0]),
       }));
     }
     else {
+      // Update other form fields
       setControllData(prevData => ({
         ...prevData!,
         [fieldName]: value,
@@ -112,7 +100,7 @@ const ControllComponent = ({ repeat, scenario }: props) => {
       <form onSubmit={submitData}>
         <Box p={2}>
 
-  
+
 
           <Box mt={2}>
             <Autocomplete
@@ -134,6 +122,8 @@ const ControllComponent = ({ repeat, scenario }: props) => {
               )}
             />
           </Box>
+
+          {/* Input for selecting interval */}
           <Box mt={2}>
             <Autocomplete
               freeSolo
@@ -142,14 +132,14 @@ const ControllComponent = ({ repeat, scenario }: props) => {
               options={interval.map((option) => option)}
               renderInput={(params) => (
                 <TextField
-                {...params}
-                label="Select interval"
-                InputProps={{
-                  ...params.InputProps,
-                  type: 'search',
-                }}
-                name="interval"
-                value={controllData?.interval}
+                  {...params}
+                  label="Select interval"
+                  InputProps={{
+                    ...params.InputProps,
+                    type: 'search',
+                  }}
+                  name="interval"
+                  value={controllData?.interval}
                   onSelect={handleControllData}
 
                   sx={{ width: 300 }}
@@ -158,9 +148,7 @@ const ControllComponent = ({ repeat, scenario }: props) => {
             />
           </Box>
 
-
-
-
+          {/* Input for selecting repetition */}
           {repeat && (
             <Box mt={2}>
               <Autocomplete
@@ -187,8 +175,8 @@ const ControllComponent = ({ repeat, scenario }: props) => {
             </Box>
           )
           }
+          {/* Additional watering inputs */}
           {repeat && <hr style={{ maxWidth: 700, marginBottom: "5px", marginTop: "10px" }} />}
-
           {wateringInputs}
 
 
@@ -202,6 +190,7 @@ const ControllComponent = ({ repeat, scenario }: props) => {
           </Typography>
         }
 
+        {/* Submit button */}
         <Button sx={{ m: 2, background: "cyan" }} type="submit" >Submit</Button>
 
       </form>

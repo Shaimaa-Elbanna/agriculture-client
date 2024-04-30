@@ -16,9 +16,15 @@ interface LocalStorageKeys {
   deviceName: string,
   deviceId: string
 }
+/**
+ * FieldComponent is a component responsible for rendering and managing field-related data.
+ * It allows users to select a device, start date, end date, start time, and end time.
+ * It also displays a line chart based on the selected parameters.
+ */
 export default function FieldComponent({fieldName,localStorageKeys}:FieldComponentProps) {
-  const [selectedDevice, setSelectedDevice] = useState(getDataFromLocalStorage(localStorageKeys.deviceName, "1"))
-  console.log("🚀 ~ selectedDevice:", selectedDevice)
+  
+    // State variables for device selection
+const [selectedDevice, setSelectedDevice] = useState(getDataFromLocalStorage(localStorageKeys.deviceName, "1"))
 
    // start time and date vars 
    const [selectedTime, setSelectedTime] = useState("")
@@ -34,28 +40,30 @@ export default function FieldComponent({fieldName,localStorageKeys}:FieldCompone
    const [endTimePickerActive, setEndTimePickerActive] = useState(true)
    const [endDatePickerActive, setEndDatePickerActive] = useState(true)
  
- 
+   // Get yesterday's date
    const yesterday = new Date();
    yesterday.setDate(yesterday.getDate() - 1);
- 
    const year = yesterday.getFullYear();
    const month = String(yesterday.getMonth() + 1).padStart(2, '0');
    const day = String(yesterday.getDate()).padStart(2, '0');
- 
- 
    const defaultSatrtAndEndDate = `${year}-${month}-${day}`;
+ 
+ 
+   // Fetch data based on the selected device
    const { data, isFetching } = useGetDeviceOneDataQuery(selectedDevice)
    const [fieldData, setFieldData] = useState<Device|undefined>()
 
 
    useEffect(() => {
-    if (data) {
+       // Update fieldData when new data is fetched
+ if (data) {
       const foundField = data?.find((field:Device) =>
         field.fieldId?.fieldName == fieldName
       )||undefined
       setFieldData(foundField)
     }
-    saveDataToLocalStorage(localStorageKeys.deviceId, fieldData?._id || "")
+       // Save device ID and name to local storage
+ saveDataToLocalStorage(localStorageKeys.deviceId, fieldData?._id || "")
     saveDataToLocalStorage(localStorageKeys.deviceName, selectedDevice)
 
   }, [selectedDevice, data])
@@ -63,23 +71,15 @@ export default function FieldComponent({fieldName,localStorageKeys}:FieldCompone
 
 
   
-  function handleDviceNameChange(event: SelectChangeEvent<string>) {
+   // Event handler for device name change
+   function handleDviceNameChange(event: SelectChangeEvent<string>) {
     setSelectedDevice(event.target.value)
 
   }
 
 
-  useEffect(() => {
-
-  }, [selectedDevice, isFetching])
-
-
-
-
-
-
-
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+   // Event handlers for date and time changes
+   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
     console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
 
@@ -89,6 +89,7 @@ export default function FieldComponent({fieldName,localStorageKeys}:FieldCompone
     console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
 
   };
+  // Toggle date and time picker visibility
   function toggleStartDatePicker() {
     setStartDatePickerActive(!startDatePickerActive)
   }
@@ -101,7 +102,8 @@ export default function FieldComponent({fieldName,localStorageKeys}:FieldCompone
   function toggleEndTimePicker() {
     setEndTimePickerActive(!endTimePickerActive)
   }
-  function handleEndDateChange(e: React.ChangeEvent<HTMLInputElement>) {
+    // Event handlers for end date and time changes
+function handleEndDateChange(e: React.ChangeEvent<HTMLInputElement>) {
     setSelectedEndDate(e.target.value)
   }
   function handleEndTimeChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -137,7 +139,8 @@ export default function FieldComponent({fieldName,localStorageKeys}:FieldCompone
         </FormControl>
         {/* drop down list  */}
 
-        <div style={{ display: "flex", flexDirection: "row" }}>
+              {/* Date and time pickers */}
+  <div style={{ display: "flex", flexDirection: "row" }}>
           {/* select start Date and Time  */}
           <div style={{ marginRight: "20px" }}>
             <div className={`date-picker  ${startDatePickerActive ? "active" : "inactive"}`}>

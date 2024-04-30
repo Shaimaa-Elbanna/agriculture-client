@@ -14,7 +14,16 @@ import TableOfAllData from './TableOfAllData';
 import { getDataFromLocalStorage } from '../../util/getAndSaveDataLocalStrorage';
 
 
-
+interface AllParams {
+  T: boolean;
+  S: boolean;
+  PH: boolean;
+  N: boolean;
+  H: boolean;
+  PHO: boolean;
+  POT: boolean;
+  [key: string]: boolean; // Add index signature to allow access with string keys
+}
 interface CompareLineChartProps {
   startTime: string | undefined
   startDate: string | undefined
@@ -23,11 +32,14 @@ interface CompareLineChartProps {
   currentDeviceId: string
 }
 
-
+/**
+ * CompareLineChart component displays a line chart comparing different parameters for a specific device.
+ * It allows users to select parameters to display and renders a line chart accordingly.
+ */
 export default function CompareLineChart({ currentDeviceId, startTime, startDate, endDate, endTime }: CompareLineChartProps) {
- 
 
-  const [allParams, setAllParams] = useState({
+
+  const [allParams, setAllParams] = useState<AllParams>({
     T: false,
     S: false,
     PH: false,
@@ -39,7 +51,7 @@ export default function CompareLineChart({ currentDeviceId, startTime, startDate
 
 
 
-// if required  to get data from localstorage
+  // if required  to get data from localstorage
   const [deviceId, setDeviceId] = useState(() => getDataFromLocalStorage("selectedDeviceID", ""))
   useEffect(() => {
     // const storedDeviceId = getDataFromLocalStorage("selectedDeviceID", "");
@@ -57,11 +69,13 @@ export default function CompareLineChart({ currentDeviceId, startTime, startDate
   console.log("🚀 ~ CompareLineChart ~ startTimeISO:", startTimeISO)
 
 
+  // Fetch required data based on device ID and time range
   useEffect(() => { }, [currentDeviceId])
   const { data, isFetching } = useGetRequiredDataWithStartTimeOfAnyDeviceQuery([currentDeviceId, startTimeISO, endTimeISO])
   const requiredData = data?.[0]?.data
 
 
+  // Format fetched data to adjust time zone
   const formattedData = requiredData?.map(item => {
     const date = new Date(new Date(item.time).getTime() + 2 * 60 * 60 * 1000);
     const year = date.getUTCFullYear()
@@ -73,6 +87,7 @@ export default function CompareLineChart({ currentDeviceId, startTime, startDate
   })
 
 
+  // Event handler for selecting parameters to display
   function handleDisplayedParams(event: React.ChangeEvent<HTMLInputElement>) {
     setAllParams((prevState) => ({ ...prevState, [event.target.name]: event.target.checked }))
   }
@@ -82,66 +97,24 @@ export default function CompareLineChart({ currentDeviceId, startTime, startDate
       <hr />
 
       {/* checkList display section  */}
-
-
       <Box sx={{ display: 'flex' }}>
         <FormControl sx={{ m: 3 }} >
           <FormLabel component="legend" style={{ marginBottom: "10px" }}>Seclect parameters to display</FormLabel>
-          <FormGroup style={{ display: "flex", flexDirection: "row" }}>
-            <FormControlLabel
-              control={
-                <Checkbox checked={allParams.PH} onChange={handleDisplayedParams} name="PH" />
-              }
-              label="PH"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox checked={allParams.H} onChange={handleDisplayedParams} name="H" />
-              }
-              label="Humidity"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox checked={allParams.N} onChange={handleDisplayedParams} name="N" />
-              }
-              label="N"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox checked={allParams.POT} onChange={handleDisplayedParams} name="POT" />
-              }
-              label="POT "
-            />
-            <FormControlLabel
-              control={
-                <Checkbox checked={allParams.S} onChange={handleDisplayedParams} name="S" />
-              }
-              label="Solidity "
-            />
-            <FormControlLabel
-              control={
-                <Checkbox checked={allParams.T} onChange={handleDisplayedParams} name="T" />
-              }
-              label="Temptrutre"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox checked={allParams.PHO} onChange={handleDisplayedParams} name="PHO" />
-              }
-              label="PHO"
-            />
 
+
+          <FormGroup>
+            {Object.keys(allParams).map((param, index) => (
+              <FormControlLabel
+                key={index}
+                control={<Checkbox checked={allParams[param]} onChange={handleDisplayedParams} name={param} />}
+                label={param}
+
+              />
+            ))}
           </FormGroup>
         </FormControl>
 
       </Box>
-
-
-
-
-
-
-
 
       {/* line chart display section  */}
 
@@ -157,6 +130,8 @@ export default function CompareLineChart({ currentDeviceId, startTime, startDate
       ) : (
         currentDeviceId && data && formattedData && (
           <div className="chart">
+
+
             <ResponsiveContainer width="100%" height="100%">
               <LineChart
                 width={500}
@@ -173,57 +148,16 @@ export default function CompareLineChart({ currentDeviceId, startTime, startDate
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                {allParams.H && (
-                  <Line
-                    type="monotone"
-                    dataKey={"H"}
-                    stroke="#82ca9d"
-                  />
-                )}
-                {allParams.N && (
-                  <Line
-                    type="monotone"
-                    dataKey={"N"}
-                    stroke="#8984d8"
-                  />
-                )}
-                {allParams.PH && (
-                  <Line
-                    type="monotone"
-                    dataKey={"PH"}
-                    stroke="#010111"
-                  />
-                )}
-                {allParams.PHO && (
-                  <Line
-                    type="monotone"
-                    dataKey={"PHO"}
-                    stroke="#FF5733"
-                  />
-                )}
-                {allParams.POT && (
-                  <Line
-                    type="monotone"
-                    dataKey={"POT"}
-                    stroke="#6A1B9A"
-                  />
-                )}
-                {allParams.S && (
-                  <Line
-                    type="monotone"
-                    dataKey={"S"}
-                    stroke="#F4D03F"
-                  />
-                )}
-                {allParams.T && (
-                  <Line
-                    type="monotone"
-                    dataKey={"T"}
-                    stroke="#3498DB"
-                  />
-                )}
-
-
+                {Object.keys(allParams).map((param, index) => (
+                  allParams[param] && (
+                    <Line
+                      key={index}
+                      type="monotone"
+                      dataKey={param}
+                      stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`} // Generate random color
+                    />
+                  )
+                ))}
               </LineChart>
             </ResponsiveContainer>
           </div>
