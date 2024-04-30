@@ -16,7 +16,6 @@ export default function ManualControll() {
         e.preventDefault()
         try {
             const submitData = await axios.post("http://localhost:3000/controll", value)
-            console.log("🚀 ~ submitData ~ submitData:", submitData)
             if (submitData.data === 'Message published successfully') {
                 if (value.status === 1) {
                     // Your logic when status is "On"
@@ -32,7 +31,6 @@ export default function ManualControll() {
         }
     }
 
-    console.log("🚀 ~ ManualControll ~ value:", value);
 
     return (
         <div>

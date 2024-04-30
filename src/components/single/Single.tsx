@@ -23,9 +23,7 @@ const Single = (props: Props) => {
 
   // start time and date vars 
   const [selectedTime, setSelectedTime] = useState("")
-  console.log("🚀 ~ Single ~ selectedTime:", selectedTime)
   const [selectedDate, setSelectedDate] = useState("");
-  console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
   const [startTimePickerActive, setStartTimePickerActive] = useState(true)
   const [startDatePickerActive, setStartDatePickerActive] = useState(true)
 
@@ -47,7 +45,6 @@ const Single = (props: Props) => {
   const defaultSatrtAndEndDate = `${year}-${month}-${day}`;
 
   const { data, isFetching } = useGetDeviceOneDataQuery(selectedDevice)
-  console.log("🚀 ~ Single ~ data:", data)
   const [fieldOne, setFieldOne] = useState<Device|undefined>()
 
   useEffect(() => {
@@ -83,12 +80,10 @@ const Single = (props: Props) => {
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
-    console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
 
   };
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedTime(e.target.value);
-    console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
 
   };
   function toggleStartDatePicker() {

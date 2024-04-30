@@ -66,7 +66,6 @@ export default function CompareLineChart({ currentDeviceId, startTime, startDate
 
   const startTimeISO = `${startDate}T${startTime}:00.000Z`
   const endTimeISO = endDate ? `${endDate}T${endTime}:00.000Z` : ""
-  console.log("🚀 ~ CompareLineChart ~ startTimeISO:", startTimeISO)
 
 
   // Fetch required data based on device ID and time range
@@ -91,7 +90,6 @@ export default function CompareLineChart({ currentDeviceId, startTime, startDate
   function handleDisplayedParams(event: React.ChangeEvent<HTMLInputElement>) {
     setAllParams((prevState) => ({ ...prevState, [event.target.name]: event.target.checked }))
   }
-  console.log("🚀 ~ formattedData ~ formattedData:", formattedData)
   return (
     <div>
       <hr />

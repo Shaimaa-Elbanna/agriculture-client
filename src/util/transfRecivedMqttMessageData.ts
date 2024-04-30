@@ -16,6 +16,5 @@ export const transformDataPayload = (dataPayload: DataPayload): Record<string, C
     }
     result[key].push(chartData);
   });
-  console.log('🚀 ~ transformDataPayload ~ result:', result);
   return result;
 };

@@ -62,7 +62,6 @@ useEffect(() => {
   
   socket.on("mqttMessage", (data: SocketData) => {
     const { deviceName, parameters } = data;
-    console.log("🚀 ~ socket.on ~ parameters:", parameters)
     const transformedData = transformDataPayload(parameters); 
 
     if (deviceName in lineChartData) {

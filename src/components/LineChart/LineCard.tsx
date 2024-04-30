@@ -17,8 +17,6 @@ interface LineChartProps {
 
 
 export default function LineChart({ deviceData }: LineChartProps) {
-  console.log("🚀 ~ LineChart ~ deviceData:", deviceData)
-
 
 
 

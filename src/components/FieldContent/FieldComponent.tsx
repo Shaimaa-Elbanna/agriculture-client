@@ -28,9 +28,7 @@ const [selectedDevice, setSelectedDevice] = useState(getDataFromLocalStorage(loc
 
    // start time and date vars 
    const [selectedTime, setSelectedTime] = useState("")
-   console.log("🚀 ~ Single ~ selectedTime:", selectedTime)
    const [selectedDate, setSelectedDate] = useState("");
-   console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
    const [startTimePickerActive, setStartTimePickerActive] = useState(true)
    const [startDatePickerActive, setStartDatePickerActive] = useState(true)
  
@@ -81,12 +79,10 @@ const [selectedDevice, setSelectedDevice] = useState(getDataFromLocalStorage(loc
    // Event handlers for date and time changes
    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDate(e.target.value);
-    console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
 
   };
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedTime(e.target.value);
-    console.log("🚀 ~ Single ~ selectedDate:", selectedDate)
 
   };
   // Toggle date and time picker visibility
